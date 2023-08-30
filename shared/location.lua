@@ -1,4 +1,4 @@
-Config.Locations =  {
+--[[Config.Locations =  {
     ['RecycleNorth'] = {
         Blip = {
             name = "Recycle Center",
@@ -69,4 +69,4 @@ Config.Locations =  {
         { name = "Bottle Bank", coords = vec4(394.08, -877.48, 29.35 , 310.12), blipTrue = true, sprite = 642, col = 2, model = `G_M_M_ChemWork_01`, scenario = "WORLD_HUMAN_CLIPBOARD", },
         { name = "Bottle Bank", coords = vec4(-1267.97, -812.08, 17.11 , 128.12), blipTrue = true, sprite = 642, col = 2, model = `G_M_M_ChemWork_01`, scenario = "WORLD_HUMAN_CLIPBOARD", },
     },
-},
+},]]

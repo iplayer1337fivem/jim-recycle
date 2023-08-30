@@ -23,37 +23,35 @@ end)
 
 --- Blips + Peds
 CreateThread(function()
-	JobLocation = PolyZone:Create({
-		vec2(992.39141845703, -3113.3854980469),
-		vec2(1028.5169677734, -3113.1450195312),
-		vec2(1027.978515625, -3088.9782714844),
-		vec2(992.19049072266, -3089.8234863281)
-	},
-	{ name = "Recycling", debugPoly = Config.Debug })
-	JobLocation:onPlayerInOut(function(isPointInside)
-		if not isPointInside then
-			EndJob() ClearProps()
-			if Config.Debug then print("^5Debug^7: ^3PolyZone^7: ^2Leaving Area^7. ^2Clocking out and cleaning up^7") end
-			if Config.JobRole then
-				if onDuty then TriggerServerEvent("QBCore:ToggleDuty") end
-			elseif onDuty == true then
-				onDuty = false
+	for location in pairs(Config.Locations["Centres"]) do local loc = Config.Locations["Centres"][location]
+		JobLocation = PolyZone:Create({
+			vec2(992.39141845703, -3113.3854980469),
+			vec2(1028.5169677734, -3113.1450195312),
+			vec2(1027.978515625, -3088.9782714844),
+			vec2(992.19049072266, -3089.8234863281)
+		},
+		{ name = "Recycling", debugPoly = Config.Debug })
+		JobLocation:onPlayerInOut(function(isPointInside)
+			if not isPointInside then
+				EndJob() ClearProps()
+				if Config.Debug then print("^5Debug^7: ^3PolyZone^7: ^2Leaving Area^7. ^2Clocking out and cleaning up^7") end
+				if Config.JobRole then
+					if onDuty then TriggerServerEvent("QBCore:ToggleDuty") end
+				elseif onDuty == true then
+					onDuty = false
+				end
+			else MakeProps()
 			end
-		else MakeProps()
-		end
-	end)
+		end)
 
-	for _, v in pairs(Config.Locations) do
-		for i = 1, #v do
-			local v = v[i]
-			if Config.Blips and v.blipTrue then blip = makeBlip({coords = v.coords, sprite = v.sprite, col = v.col, name = v.name})	end
-			if Config.Pedspawn then
+		if Config.Locations["Centres"][location].Blip.blipEnable then blip = makeBlip(Config.Locations["Centres"][location].Blip)	end
+		--[[	if Config.Pedspawn then
 				if not Peds[v.name..i] then
 					loadModel(v.model)
 					Peds[v.name..i] = makePed(v.model, v.coords, true, false, v.scenario, nil)
 				end
 			end
-		end
+		end]]
 	end
 	--Make Targets
 	local price = "" if Config.PayAtDoor then price = " ($"..Config.PayAtDoor..")" end
