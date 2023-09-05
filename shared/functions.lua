@@ -1,4 +1,14 @@
-RegisterNetEvent('QBCore:Client:UpdateObject', function() QBCore = exports['qb-core']:GetCoreObject() end)
+Core = exports['qb-core']:GetCoreObject()
+
+--Core = {}
+if Config.Core == "qb" then
+	local CoreConvert = exports['qb-core']:GetCoreObject()
+	Core.Shared.Items = CoreConvert.Shared.Items
+end
+if Config.Core == "ox" then
+
+end
+
 
 function loadModel(model)
     local time = 1000
@@ -56,11 +66,12 @@ function makeBlip(data)
 	SetBlipColour(blip, data.col or 0)
 	SetBlipScale(blip, data.scale or 0.7)
 	SetBlipDisplay(blip, (data.disp or 6))
+	if data.category then SetBlipCategory(blip, data.category) end
 	BeginTextCommandSetBlipName('STRING')
-	AddTextComponentString(tostring(data.name) or Loc[Config.Lan].blip["name"])
+	AddTextComponentString(tostring(data.name))
 	EndTextCommandSetBlipName(blip)
 	if Config.Debug then print("^5Debug^7: ^6Blip ^2created for location^7: '^6"..data.name.."^7'") end
-    return blip
+	return blip
 end
 
 function lookEnt(entity)
@@ -121,7 +132,7 @@ if Config.Inv == "ox" then
 else
     function HasItem(items, amount)
         local amount, count = amount or 1, 0
-        for _, itemData in pairs(QBCore.Functions.GetPlayerData().items) do
+        for _, itemData in pairs(Core.Functions.GetPlayerData().items) do
             if itemData and (itemData.name == items) then
                 if Config.Debug then print("^5Debug^7: ^3HasItem^7: ^2Item^7: '^3"..tostring(items).."^7' ^2Slot^7: ^3"..itemData.slot.." ^7x(^3"..tostring(itemData.amount).."^7)") end
                 count += (itemData.amount or 1)
@@ -139,7 +150,7 @@ function progressBar(data)
 			anim = { dict = data.dict, clip = data.anim, flag = data.flag or 8, scenario = data.task }, disable = { combat = true }, }) then result = true
 		else result = false	end
 	else
-		QBCore.Functions.Progressbar("mechbar",	data.label,	data.time, data.dead, data.cancel,
+		Core.Functions.Progressbar("mechbar",	data.label,	data.time, data.dead, data.cancel,
 			{ disableMovement = true, disableCarMovement = true, disableMouse = false, disableCombat = true, },
 			{ animDict = data.dict, anim = data.anim, flags = data.flag, task = data.task }, {}, {}, function()
 				result = true
